@@ -1,0 +1,83 @@
+[
+  {
+    "id": "landing-page",
+    "name": "Landing Page",
+    "category": "Presença Digital",
+    "solves": ["NO_WEBSITE"],
+    "description": "Página única focada em apresentar a empresa, os serviços e facilitar o contato de novos clientes.",
+    "expected_result": "Mais credibilidade e um canal profissional para captar contatos pela internet.",
+    "priority": 1
+  },
+  {
+    "id": "site-institucional",
+    "name": "Site Institucional",
+    "category": "Presença Digital",
+    "solves": ["NO_WEBSITE"],
+    "description": "Site completo com páginas institucionais, serviços, contato e identidade visual da empresa.",
+    "expected_result": "Presença digital consistente e maior credibilidade diante de novos clientes.",
+    "priority": 2
+  },
+  {
+    "id": "seo-local",
+    "name": "SEO Local",
+    "category": "Visibilidade",
+    "solves": ["NO_WEBSITE", "NO_GOOGLE_PRESENCE", "LOW_SOCIAL_PROOF"],
+    "description": "Otimização para aparecer nas buscas do Google e do Google Maps na região de atuação da empresa.",
+    "expected_result": "Maior visibilidade local e mais oportunidades de ser encontrado por clientes próximos.",
+    "priority": 3
+  },
+  {
+    "id": "automacao-whatsapp",
+    "name": "Automação WhatsApp",
+    "category": "Automação",
+    "solves": ["NO_WHATSAPP"],
+    "description": "Configuração de atendimento e respostas automáticas via WhatsApp para facilitar o contato comercial.",
+    "expected_result": "Facilidade de contato e resposta mais rápida a novos clientes.",
+    "priority": 4
+  },
+  {
+    "id": "google-business",
+    "name": "Google Business",
+    "category": "Reputação",
+    "solves": ["NO_GOOGLE_PRESENCE", "LOW_RATING", "LOW_SOCIAL_PROOF"],
+    "description": "Configuração e otimização do perfil no Google Meu Negócio, incluindo estímulo a novas avaliações.",
+    "expected_result": "Mais prova social e confiança para novos clientes que pesquisam a empresa no Google.",
+    "priority": 5
+  },
+  {
+    "id": "chatbot",
+    "name": "Chatbot",
+    "category": "Automação",
+    "solves": ["NO_WHATSAPP"],
+    "description": "Assistente automático para responder dúvidas frequentes e qualificar contatos antes do atendimento humano.",
+    "expected_result": "Redução no tempo de resposta e organização do primeiro contato com o cliente.",
+    "priority": 6
+  },
+  {
+    "id": "agendamento-online",
+    "name": "Agendamento Online",
+    "category": "Operacional",
+    "solves": [],
+    "description": "Sistema de agenda online para o cliente marcar horários sem depender de contato manual.",
+    "expected_result": "Menos atrito no processo de marcação e redução do tempo gasto com agendamento manual.",
+    "priority": 7
+  },
+  {
+    "id": "cardapio-digital",
+    "name": "Cardápio Digital",
+    "category": "Operacional",
+    "solves": ["NO_WEBSITE"],
+    "description": "Cardápio digital com pedidos integrados e botão de contato via WhatsApp, voltado para negócios de alimentação.",
+    "expected_result": "Mais pedidos diretos e redução de fricção no processo de compra.",
+    "priority": 8
+  },
+  {
+    "id": "crm",
+    "name": "CRM",
+    "category": "Gestão Comercial",
+    "solves": [],
+    "description": "Ferramenta para organizar contatos, negociações e follow-ups em um único lugar.",
+    "expected_result": "Mais organização do funil de vendas e menos oportunidades perdidas por falta de acompanhamento.",
+    "priority": 9
+  }
+]

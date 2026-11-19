@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReactNode } from "react";
 
 import {
@@ -8,16 +10,29 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type DashboardLayoutProps = {
   children: ReactNode;
   apiConnected: boolean;
 };
 
+function getNavLinkClasses(isActive: boolean) {
+  return isActive
+    ? "flex items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-950/20 transition hover:bg-blue-500"
+    : "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white";
+}
+
 export default function DashboardLayout({
   children,
   apiConnected,
 }: DashboardLayoutProps) {
+  const pathname = usePathname();
+
+  const isDashboardActive = pathname === "/";
+  const isEmpresasActive = pathname.startsWith("/empresas");
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="grid min-h-screen lg:grid-cols-[280px_minmax(0,1fr)]">
@@ -37,37 +52,41 @@ export default function DashboardLayout({
             </div>
 
             <nav className="space-y-2">
-              <a
-                href="#dashboard"
-                className="flex items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold shadow-lg shadow-blue-950/20 transition hover:bg-blue-500"
+              <Link
+                href="/"
+                className={getNavLinkClasses(
+                  isDashboardActive,
+                )}
               >
                 <LayoutDashboard className="h-5 w-5" />
                 Dashboard
-              </a>
+              </Link>
 
-              <a
-                href="#empresas"
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
+              <Link
+                href="/empresas"
+                className={getNavLinkClasses(
+                  isEmpresasActive,
+                )}
               >
                 <Building2 className="h-5 w-5" />
                 Empresas
-              </a>
+              </Link>
 
-              <a
-                href="#melhores-leads"
+              <Link
+                href="/#melhores-leads"
                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
               >
                 <Target className="h-5 w-5" />
                 Melhores leads
-              </a>
+              </Link>
 
-              <a
-                href="#indicadores"
+              <Link
+                href="/#indicadores"
                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
               >
                 <BarChart3 className="h-5 w-5" />
                 Indicadores
-              </a>
+              </Link>
             </nav>
 
             <div className="mt-auto pt-8">

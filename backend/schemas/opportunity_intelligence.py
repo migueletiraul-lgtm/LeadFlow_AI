@@ -103,6 +103,11 @@ class WinProbability(BaseModel):
 
 class OpportunityIntelligence(BaseModel):
     company_id: int
+    company_name: str
+    website: str | None
+    instagram: str | None
+    city: str
+    state: str
     digital_health: DigitalHealth
     opportunity: Opportunity
     pain_points: list[PainPoint]

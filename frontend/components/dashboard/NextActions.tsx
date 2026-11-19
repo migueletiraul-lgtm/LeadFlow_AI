@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   Flame,
   MessageCircle,
   Sparkles,
@@ -6,7 +7,9 @@ import {
   Target,
   Trophy,
 } from "lucide-react";
+import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import type { Lead } from "@/lib/types";
 
 type NextActionsProps = {
@@ -15,12 +18,14 @@ type NextActionsProps = {
 
 type SuggestedAction = {
   title: string;
+  leadId: number;
   leadName: string;
   description: string;
   reasons: string[];
   icon: typeof Target;
   iconClasses: string;
   borderClasses: string;
+  ctaLabel: string;
 };
 
 function normalizeStatus(
@@ -92,6 +97,7 @@ export default function NextActions({
   if (bestNewLead) {
     actions.push({
       title: "Aborde hoje",
+      leadId: bestNewLead.id,
       leadName: bestNewLead.name,
       description:
         "Este é o melhor lead novo disponível na sua base.",
@@ -109,12 +115,14 @@ export default function NextActions({
         "bg-red-100 text-red-600",
       borderClasses:
         "border-red-200 bg-red-50/50",
+      ctaLabel: "Analisar oportunidade",
     });
   }
 
   if (followUpLead) {
     actions.push({
       title: "Faça follow-up",
+      leadId: followUpLead.id,
       leadName: followUpLead.name,
       description:
         "Este lead já foi contatado e ainda pode avançar no funil.",
@@ -128,12 +136,14 @@ export default function NextActions({
         "bg-blue-100 text-blue-600",
       borderClasses:
         "border-blue-200 bg-blue-50/50",
+      ctaLabel: "Ver oportunidade",
     });
   }
 
   if (respondedLead) {
     actions.push({
       title: "Avance para reunião",
+      leadId: respondedLead.id,
       leadName: respondedLead.name,
       description:
         "Este lead já respondeu e merece atenção imediata.",
@@ -147,6 +157,7 @@ export default function NextActions({
         "bg-violet-100 text-violet-600",
       borderClasses:
         "border-violet-200 bg-violet-50/50",
+      ctaLabel: "Ver oportunidade",
     });
   }
 
@@ -158,6 +169,7 @@ export default function NextActions({
   ) {
     actions.push({
       title: "Lead premium",
+      leadId: premiumLead.id,
       leadName: premiumLead.name,
       description:
         "Empresa com boa reputação e potencial comercial relevante.",
@@ -173,6 +185,7 @@ export default function NextActions({
         "bg-amber-100 text-amber-600",
       borderClasses:
         "border-amber-200 bg-amber-50/50",
+      ctaLabel: "Ver oportunidade",
     });
   }
 
@@ -221,13 +234,18 @@ export default function NextActions({
       </div>
 
       <div className="mt-7 grid gap-4 xl:grid-cols-2">
-        {actions.slice(0, 4).map((action) => {
+        {actions.slice(0, 4).map((action, index) => {
           const Icon = action.icon;
+          const isTopPriority = index === 0;
 
           return (
             <article
               key={`${action.title}-${action.leadName}`}
-              className={`rounded-2xl border p-5 ${action.borderClasses}`}
+              className={`rounded-2xl border p-5 ${action.borderClasses} ${
+                isTopPriority
+                  ? "ring-1 ring-red-200"
+                  : ""
+              }`}
             >
               <div className="flex items-start gap-3">
                 <div
@@ -262,6 +280,25 @@ export default function NextActions({
                   </div>
                 ))}
               </div>
+
+              <Link
+                href={`/empresas/${action.leadId}`}
+                className="mt-4 block"
+              >
+                <Button
+                  type="button"
+                  variant={
+                    isTopPriority
+                      ? "default"
+                      : "outline"
+                  }
+                  size="sm"
+                  className="w-full"
+                >
+                  {action.ctaLabel}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </article>
           );
         })}

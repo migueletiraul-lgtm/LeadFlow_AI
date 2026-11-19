@@ -1,4 +1,7 @@
-import type { Lead } from "@/lib/types";
+import type {
+  Lead,
+  NextActionPriority,
+} from "@/lib/types";
 
 export type OpportunityInsight = {
   title: string;
@@ -18,6 +21,15 @@ export type AIRecommendation = {
     | "Telefone";
   nextAction: string;
   reasons: string[];
+};
+
+export const NEXT_ACTION_PRIORITY_STYLES: Record<
+  NextActionPriority,
+  string
+> = {
+  "alta": "border-red-200 bg-red-50 text-red-700",
+  "média": "border-amber-200 bg-amber-50 text-amber-700",
+  "baixa": "border-slate-200 bg-slate-100 text-slate-700",
 };
 
 export function getScoreLabel(score: number) {

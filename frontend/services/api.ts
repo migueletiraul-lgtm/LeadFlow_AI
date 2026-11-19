@@ -44,6 +44,19 @@ export async function getCompanies(): Promise<Lead[]> {
   return handleResponse<Lead[]>(response);
 }
 
+export async function getCompany(
+  companyId: number,
+): Promise<Lead> {
+  const response = await fetch(
+    `${API_URL}/companies/${companyId}`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  return handleResponse<Lead>(response);
+}
+
 export async function getCompanyIntelligence(
   companyId: number,
 ): Promise<OpportunityIntelligenceResponse> {
@@ -53,6 +66,21 @@ export async function getCompanyIntelligence(
       cache: "no-store",
     },
   );
+
+  return handleResponse<OpportunityIntelligenceResponse>(response);
+}
+
+export async function runAudit(
+  payload: { website?: string; instagram?: string },
+): Promise<OpportunityIntelligenceResponse> {
+  const response = await fetch(`${API_URL}/audit`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+    cache: "no-store",
+  });
 
   return handleResponse<OpportunityIntelligenceResponse>(response);
 }
@@ -105,6 +133,24 @@ export async function getBestLeads(
   return handleResponse<BestLeadsResponse>(response);
 }
 
+export async function updateCompanyStatus(
+  companyId: number,
+  status: string,
+): Promise<Lead> {
+  const response = await fetch(
+    `${API_URL}/companies/${companyId}/status`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    },
+  );
+
+  return handleResponse<Lead>(response);
+}
+
 export async function updatePipelineStage(
   companyId: number,
   pipelineStage: PipelineStage,
@@ -118,6 +164,46 @@ export async function updatePipelineStage(
       },
       body: JSON.stringify({
         pipeline_stage: pipelineStage,
+      }),
+    },
+  );
+
+  return handleResponse<Lead>(response);
+}
+
+export async function registerCompanyProposal(
+  companyId: number,
+  proposalValue: number,
+): Promise<Lead> {
+  const response = await fetch(
+    `${API_URL}/companies/${companyId}/proposal`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        proposal_value: proposalValue,
+      }),
+    },
+  );
+
+  return handleResponse<Lead>(response);
+}
+
+export async function convertCompanyToClient(
+  companyId: number,
+  closedValue: number,
+): Promise<Lead> {
+  const response = await fetch(
+    `${API_URL}/companies/${companyId}/client-conversion`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        closed_value: closedValue,
       }),
     },
   );

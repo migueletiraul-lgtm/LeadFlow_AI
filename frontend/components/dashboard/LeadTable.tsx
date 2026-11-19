@@ -15,6 +15,8 @@ import {
   Trophy,
   X,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import LeadDetailsDrawer from "./LeadDetailsDrawer";
 import { Badge } from "@/components/ui/badge";
@@ -266,6 +268,8 @@ export default function LeadTable({
   leads,
   onLeadUpdated,
 }: LeadTableProps) {
+  const router = useRouter();
+
   const [localLeads, setLocalLeads] =
     useState<Lead[]>(leads);
 
@@ -294,8 +298,7 @@ export default function LeadTable({
     useState(false);
 
   function handleOpenLead(lead: Lead) {
-    setSelectedLead(lead);
-    setDrawerOpen(true);
+    router.push(`/empresas/${lead.id}`);
   }
 
   function handleCloseDrawer() {
@@ -830,9 +833,15 @@ function handleLeadUpdated(updatedLead: Lead) {
                     >
                       <TableCell>
                         <div>
-                          <p className="font-semibold text-slate-900">
+                          <Link
+                            href={`/empresas/${lead.id}`}
+                            onClick={(event) =>
+                              event.stopPropagation()
+                            }
+                            className="font-semibold text-slate-900 hover:text-blue-700 hover:underline"
+                          >
                             {lead.name}
-                          </p>
+                          </Link>
 
                           <p className="mt-1 text-xs text-slate-500">
                             Nota Google:{" "}
@@ -955,24 +964,22 @@ function handleLeadUpdated(updatedLead: Lead) {
                             </a>
                           )}
 
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            title="Ver detalhes"
-                            aria-label={`Ver detalhes de ${lead.name}`}
-                            onClick={(
-                              event,
-                            ) => {
-                              event.stopPropagation();
-
-                              handleOpenLead(
-                                lead,
-                              );
-                            }}
+                          <Link
+                            href={`/empresas/${lead.id}`}
+                            onClick={(event) =>
+                              event.stopPropagation()
+                            }
                           >
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              title="Ver detalhes"
+                              aria-label={`Ver detalhes de ${lead.name}`}
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          </Link>
                         </div>
                       </TableCell>
                     </TableRow>

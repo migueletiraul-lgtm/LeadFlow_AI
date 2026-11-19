@@ -24,7 +24,7 @@ def _parse_average_ticket(average_ticket_range: str | None) -> float | None:
         cleaned = (
             raw.replace(".", "").replace(",", ".")
             if "," in raw
-            else raw.replace(",", "")
+            else raw.replace(".", "")
         )
 
         try:

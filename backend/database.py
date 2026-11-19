@@ -1,4 +1,5 @@
 import json
+import re
 import sqlite3
 from pathlib import Path
 
@@ -110,6 +111,22 @@ def initialize_database() -> None:
                 ALTER TABLE companies
                 ADD COLUMN pipeline_stage TEXT
                 DEFAULT 'Novo Lead'
+                """
+            )
+
+        if "proposal_value" not in existing_columns:
+            connection.execute(
+                """
+                ALTER TABLE companies
+                ADD COLUMN proposal_value REAL
+                """
+            )
+
+        if "closed_value" not in existing_columns:
+            connection.execute(
+                """
+                ALTER TABLE companies
+                ADD COLUMN closed_value REAL
                 """
             )
 
@@ -308,6 +325,85 @@ def find_company_by_name_and_city(
         connection.close()
 
 
+def _normalize_website(value: str) -> str:
+    normalized = value.strip().lower()
+    normalized = re.sub(r"^https?://", "", normalized)
+    normalized = re.sub(r"^www\.", "", normalized)
+    normalized = normalized.rstrip("/")
+
+    return normalized
+
+
+def _normalize_instagram_handle(value: str) -> str:
+    normalized = value.strip().lower()
+    normalized = re.sub(
+        r"^https?://(www\.)?instagram\.com/",
+        "",
+        normalized,
+    )
+    normalized = normalized.lstrip("@")
+    normalized = normalized.rstrip("/")
+
+    return normalized
+
+
+def find_company_by_website_or_instagram(
+    website: str | None = None,
+    instagram: str | None = None,
+) -> dict | None:
+    normalized_website = (
+        _normalize_website(website) if website else None
+    )
+
+    normalized_instagram = (
+        _normalize_instagram_handle(instagram)
+        if instagram
+        else None
+    )
+
+    if not normalized_website and not normalized_instagram:
+        return None
+
+    connection = get_connection()
+
+    try:
+        candidates = connection.execute(
+            """
+            SELECT *
+            FROM companies
+            WHERE
+                (website IS NOT NULL AND TRIM(website) != '')
+                OR (instagram IS NOT NULL AND TRIM(instagram) != '')
+            """
+        ).fetchall()
+
+        for row in candidates:
+            company = dict(row)
+
+            if (
+                normalized_website
+                and company["website"]
+                and _normalize_website(company["website"])
+                == normalized_website
+            ):
+                return company
+
+            if (
+                normalized_instagram
+                and company["instagram"]
+                and _normalize_instagram_handle(
+                    company["instagram"],
+                )
+                == normalized_instagram
+            ):
+                return company
+
+        return None
+
+    finally:
+        connection.close()
+
+
 def get_company_by_id(
     company_id: int,
 ) -> dict | None:
@@ -440,6 +536,128 @@ def update_company_pipeline_stage(
             """,
             (
                 normalized_stage,
+                company_id,
+            ),
+        )
+
+        connection.commit()
+
+        updated_company = connection.execute(
+            """
+            SELECT *
+            FROM companies
+            WHERE id = ?
+            LIMIT 1
+            """,
+            (company_id,),
+        ).fetchone()
+
+        if updated_company is None:
+            return None
+
+        return dict(updated_company)
+
+    finally:
+        connection.close()
+
+
+def register_company_proposal(
+    company_id: int,
+    proposal_value: float,
+) -> dict | None:
+    connection = get_connection()
+
+    try:
+        company = connection.execute(
+            """
+            SELECT *
+            FROM companies
+            WHERE id = ?
+            LIMIT 1
+            """,
+            (company_id,),
+        ).fetchone()
+
+        if company is None:
+            return None
+
+        if company["status"] != "Reunião":
+            raise ValueError(
+                "A proposta só pode ser registrada "
+                "quando o status atual é 'Reunião'."
+            )
+
+        connection.execute(
+            """
+            UPDATE companies
+            SET
+                status = 'Proposta',
+                proposal_value = ?
+            WHERE id = ?
+            """,
+            (
+                proposal_value,
+                company_id,
+            ),
+        )
+
+        connection.commit()
+
+        updated_company = connection.execute(
+            """
+            SELECT *
+            FROM companies
+            WHERE id = ?
+            LIMIT 1
+            """,
+            (company_id,),
+        ).fetchone()
+
+        if updated_company is None:
+            return None
+
+        return dict(updated_company)
+
+    finally:
+        connection.close()
+
+
+def convert_company_to_client(
+    company_id: int,
+    closed_value: float,
+) -> dict | None:
+    connection = get_connection()
+
+    try:
+        company = connection.execute(
+            """
+            SELECT *
+            FROM companies
+            WHERE id = ?
+            LIMIT 1
+            """,
+            (company_id,),
+        ).fetchone()
+
+        if company is None:
+            return None
+
+        if company["status"] != "Proposta":
+            raise ValueError(
+                "A conversão em cliente só pode ser "
+                "feita quando o status atual é 'Proposta'."
+            )
+
+        connection.execute(
+            """
+            UPDATE companies
+            SET
+                status = 'Cliente',
+                closed_value = ?
+            WHERE id = ?
+            """,
+            (
+                closed_value,
                 company_id,
             ),
         )

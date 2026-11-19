@@ -8,17 +8,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 
 from backend.database import (
+    convert_company_to_client,
     find_company_by_name_and_city,
     get_best_leads,
     get_companies_by_pipeline_stage,
     get_connection,
     initialize_database,
     insert_company,
+    register_company_proposal,
     update_company,
     update_company_pipeline_stage,
 )
 from backend.excel_service import export_best_leads_to_excel
 from backend.services.apify_service import search_google_maps
+from backend.routers.audit import (
+    router as audit_router,
+)
 from backend.routers.interactions import (
     router as interactions_router,
 )
@@ -56,6 +61,7 @@ app.add_middleware(
 )
 
 
+app.include_router(audit_router)
 app.include_router(interactions_router)
 app.include_router(intelligence_router)
 app.include_router(seller_profile_router)
@@ -145,6 +151,18 @@ class PipelineStageUpdate(BaseModel):
     pipeline_stage: str = Field(
         min_length=2,
         max_length=40,
+    )
+
+
+class ProposalCreate(BaseModel):
+    proposal_value: float = Field(
+        gt=0,
+    )
+
+
+class ClientConversionCreate(BaseModel):
+    closed_value: float = Field(
+        gt=0,
     )
 
 
@@ -531,6 +549,66 @@ def update_pipeline_stage(
         company = update_company_pipeline_stage(
             company_id=company_id,
             pipeline_stage=payload.pipeline_stage,
+        )
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        ) from error
+
+    if company is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Empresa não encontrada.",
+        )
+
+    return company
+
+
+# ===========================
+# REGISTRAR PROPOSTA COMERCIAL
+# ===========================
+
+@app.patch("/companies/{company_id}/proposal")
+def create_company_proposal(
+    company_id: int,
+    payload: ProposalCreate,
+):
+    try:
+        company = register_company_proposal(
+            company_id=company_id,
+            proposal_value=payload.proposal_value,
+        )
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        ) from error
+
+    if company is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Empresa não encontrada.",
+        )
+
+    return company
+
+
+# ===========================
+# CONVERTER EM CLIENTE
+# ===========================
+
+@app.patch("/companies/{company_id}/client-conversion")
+def create_client_conversion(
+    company_id: int,
+    payload: ClientConversionCreate,
+):
+    try:
+        company = convert_company_to_client(
+            company_id=company_id,
+            closed_value=payload.closed_value,
         )
 
     except ValueError as error:

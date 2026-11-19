@@ -1,0 +1,210 @@
+# LeadFlow UI System
+
+## Objetivo
+
+Garantir consistência visual em toda a plataforma.
+
+Cada tela deve parecer parte do mesmo produto.
+
+---
+
+# Design
+
+Estilo:
+
+- Moderno
+- Minimalista
+- Premium
+- Clean
+- Profissional
+
+Nunca utilizar elementos exagerados.
+
+A prioridade é clareza.
+
+---
+
+# Cores
+
+Primária
+
+Azul
+
+Secundária
+
+Slate
+
+Sucesso
+
+Verde
+
+Aviso
+
+Amarelo
+
+Erro
+
+Vermelho
+
+Fundo
+
+Branco
+
+---
+
+# Espaçamento
+
+Utilizar múltiplos de 4.
+
+Exemplos
+
+4
+
+8
+
+12
+
+16
+
+24
+
+32
+
+40
+
+48
+
+64
+
+---
+
+# Border Radius
+
+Cards
+
+16px
+
+Botões
+
+12px
+
+Inputs
+
+12px
+
+Badges
+
+999px
+
+---
+
+# Sombras
+
+Sempre suaves.
+
+Nunca utilizar sombras muito fortes.
+
+---
+
+# Tipografia
+
+Headings
+
+Bold
+
+Conteúdo
+
+Regular
+
+Descrição
+
+Medium
+
+Nunca utilizar mais de três pesos diferentes.
+
+---
+
+# Cards
+
+Todos os cards seguem o mesmo padrão.
+
+- Fundo branco
+- Radius padrão
+- Shadow suave
+- Padding consistente
+
+---
+
+# Botões
+
+Existem apenas quatro tipos.
+
+Primary
+
+Secondary
+
+Ghost
+
+Danger
+
+Não criar novos estilos sem necessidade.
+
+---
+
+# Ícones
+
+Lucide React.
+
+Sempre.
+
+---
+
+# Tabelas
+
+Cabeçalho fixo.
+
+Linhas leves.
+
+Hover discreto.
+
+Ações alinhadas à direita.
+
+---
+
+# Drawer
+
+O Drawer é utilizado apenas para ações rápidas.
+
+Quando uma tela exigir análise completa deve existir um Workspace dedicado.
+
+---
+
+# Responsividade
+
+Desktop primeiro.
+
+Tablet.
+
+Mobile.
+
+Nenhum componente pode quebrar em telas pequenas.
+
+---
+
+# UX
+
+Sempre responder três perguntas.
+
+Onde estou?
+
+O que aconteceu?
+
+O que devo fazer agora?
+
+---
+
+# Filosofia
+
+A interface nunca deve competir com os dados.
+
+A interface deve destacar apenas o que realmente importa.

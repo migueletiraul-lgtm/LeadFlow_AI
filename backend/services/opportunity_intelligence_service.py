@@ -907,6 +907,11 @@ def build_opportunity_intelligence(
 
     return OpportunityIntelligence(
         company_id=company["id"],
+        company_name=company["name"],
+        website=company.get("website"),
+        instagram=company.get("instagram"),
+        city=company["city"],
+        state=company["state"],
         digital_health=digital_health,
         opportunity=opportunity,
         pain_points=pain_points,

@@ -24,6 +24,8 @@ export type Lead = {
   lead_score: number;
   status: string;
   pipeline_stage: PipelineStage;
+  proposal_value: number | null;
+  closed_value: number | null;
   created_at: string;
 };
 
@@ -137,6 +139,11 @@ export type WinProbability = {
 
 export type OpportunityIntelligenceResponse = {
   company_id: number;
+  company_name: string;
+  website: string | null;
+  instagram: string | null;
+  city: string;
+  state: string;
   digital_health: DigitalHealth;
   opportunity: Opportunity;
   pain_points: PainPoint[];

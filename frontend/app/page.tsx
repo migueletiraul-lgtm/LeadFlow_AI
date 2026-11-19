@@ -1,5 +1,7 @@
 import Charts from "@/components/charts/Charts";
 import AIInsights from "@/components/dashboard/AIInsights";
+import CommercialPerformance from "@/components/dashboard/CommercialPerformance";
+import CommercialSignals from "@/components/dashboard/CommercialSignals";
 import DashboardLeadsView from "@/components/dashboard/DashboardLeadsView";
 import Hero from "@/components/dashboard/Hero";
 import NextActions from "@/components/dashboard/NextActions";
@@ -147,53 +149,91 @@ export default async function Home() {
             </section>
           )}
 
-          <section
-            id="indicadores"
-            className="mb-8"
-          >
-            <OverviewCards
-              leads={leads}
-            />
-          </section>
+          {/* 1. Prioridade de hoje */}
+          <div className="mb-8">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+              Prioridade de hoje
+            </p>
 
-          {executiveDashboard && (
-            <section className="mb-8">
-              <ExecutiveDashboardCard
-                summary={executiveDashboard.summary}
-                potentialRevenue={executiveDashboard.potential_revenue}
-                avgWinProbability={executiveDashboard.avg_win_probability}
-                priorityLeads={executiveDashboard.priority_leads}
-              />
-            </section>
-          )}
-
-          <section className="mb-8">
-            <AIInsights
-              leads={leads}
-            />
-          </section>
-
-          <section className="mb-8">
             <NextActions
               leads={leads}
             />
-          </section>
+          </div>
 
-          <section className="mb-8">
-            <SalesFunnel
+          {/* 2. Melhores oportunidades */}
+          <div className="mb-8">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+              Melhores oportunidades
+            </p>
+
+            <DashboardLeadsView
               leads={leads}
             />
-          </section>
+          </div>
 
-          <section className="mb-8">
-            <Charts
-              leads={leads}
-            />
-          </section>
+          {/* 3. Sinais comerciais */}
+          <div className="mb-8">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+              Sinais comerciais
+            </p>
 
-          <DashboardLeadsView
-            leads={leads}
-          />
+            <section className="mb-6">
+              <CommercialSignals
+                leads={leads}
+              />
+            </section>
+
+            <section className="mb-6">
+              <AIInsights
+                leads={leads}
+              />
+            </section>
+
+            <section>
+              <SalesFunnel
+                leads={leads}
+              />
+            </section>
+          </div>
+
+          {/* 4. Resumo de performance */}
+          <div>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+              Resumo de performance
+            </p>
+
+            <section className="mb-6">
+              <CommercialPerformance
+                leads={leads}
+              />
+            </section>
+
+            <section
+              id="indicadores"
+              className="mb-6"
+            >
+              <OverviewCards
+                leads={leads}
+              />
+            </section>
+
+            {executiveDashboard && (
+              <section className="mb-6">
+                <ExecutiveDashboardCard
+                  summary={executiveDashboard.summary}
+                  potentialRevenue={executiveDashboard.potential_revenue}
+                  avgWinProbability={executiveDashboard.avg_win_probability}
+                  priorityLeads={executiveDashboard.priority_leads}
+                />
+              </section>
+            )}
+
+            <section>
+              <Charts
+                leads={leads}
+              />
+            </section>
+          </div>
         </div>
       </main>
     </DashboardLayout>
